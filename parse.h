@@ -20,5 +20,5 @@ typedef struct {
   char *strings;
 } NodeList;
 
-NodeList parse(TokenList tl);
+Node *recur_parse(Token *tkns, size_t left, Vector *nodes);
 void free_NodeList(NodeList nl);
