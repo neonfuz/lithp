@@ -20,5 +20,7 @@ typedef struct {
   char *strings;
 } NodeList;
 
+void print_parsenode(Node *n, int depth, FILE *f);
+
 Node *recur_parse(Token *tkns, size_t left, Vector *nodes);
 void free_NodeList(NodeList nl);

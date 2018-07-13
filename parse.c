@@ -6,6 +6,42 @@
 #include "parse.h"
 
 static
+void pad_depth(int depth, FILE *f)
+{
+  depth *= 2; // Tab width
+  while (depth--) fputc(' ', f);
+}
+
+void print_parsenode(Node *n, int depth, FILE *f)
+{
+  enum NodeType type = n==NULL ? P_NIL : n->type;
+  char *typestr;
+  switch (type) {
+  case P_NIL:  typestr = "NIL"; break;
+  case P_SYM:  typestr = "SYM"; break;
+  case P_PAIR: typestr = "PAIR"; break;
+  default:     typestr = "UNKNOWN"; break;
+  }
+
+  pad_depth(depth, f);
+  fprintf(f, "type: %s\n", typestr);
+
+  switch (type) {
+  case P_NIL:
+    break;
+  case P_SYM:
+    pad_depth(depth, f);
+    fprintf(f, "content: %s\n\n", n->sym.name);
+    break;
+  case P_PAIR:
+    print_parsenode(n->pair.a, depth+1, f);
+    print_parsenode(n->pair.b, depth+1, f);
+    break;
+  default: break;
+  }
+}
+
+static
 Node *parse_list(Token *tkns, size_t left, Vector *nodes)
 {
   if (!left || tkns->type == RPAR)
