@@ -22,5 +22,5 @@ typedef struct {
 
 void print_parsenode(Node *n, int depth, FILE *f);
 
-Node *parse(Token *tkns, size_t left, Vector *nodes);
+Node *parse(Token **tkns, size_t *left, Vector *nodes);
 void free_NodeList(NodeList nl);

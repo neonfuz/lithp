@@ -12,8 +12,10 @@ void print_test(char *sexpr)
   TokenList tl = tokenize(sexpr);
   printTokens(tl.tokens, tl.count, stdout);
 
+  Token *tokens = tl.tokens;
+  size_t count = tl.count;
   Vector nodes = new_Vector(Node, tl.count);
-  Node *n = parse(tl.tokens, tl.count, &nodes);
+  Node *n = parse(&tokens, &count, &nodes);
 
   print_parsenode(n, 0, stdout);
 

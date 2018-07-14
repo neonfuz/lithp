@@ -50,7 +50,7 @@ Node *parse_list(Token **tkns, size_t *left, Vector *nodes)
   if (!*left || (*tkns)->type == RPAR)
     return NULL;
 
-  Node *n = parse(*tkns, *left, nodes);
+  Node *n = parse(tkns, left, nodes);
   if (n == NULL)
     return NULL;
 
@@ -62,20 +62,20 @@ Node *parse_list(Token **tkns, size_t *left, Vector *nodes)
   return pair;
 }
 
-Node *parse(Token *tkns, size_t left, Vector *nodes)
+Node *parse(Token **tkns, size_t *left, Vector *nodes)
 {
-  if (!left)
+  if (!*left)
     return NULL;
 
   Node *n;
-  switch (tkns->type) {
+  switch ((*tkns)->type) {
     case SYM:
       n = Vector_next(nodes);
       n->type = P_SYM;
-      n->sym.name = tkns[0].name;
+      n->sym.name = (*tkns)[0].name;
       return n;
     case LPAR:
-      return parse_list(&tkns, &left, nodes);
+      return parse_list(tkns, left, nodes);
     case RPAR: break;
       return NULL;
   }
