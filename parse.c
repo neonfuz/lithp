@@ -42,19 +42,22 @@ void print_parsenode(Node *n, int depth, FILE *f)
 }
 
 static
-Node *parse_list(Token *tkns, size_t left, Vector *nodes)
+Node *parse_list(Token **tkns, size_t *left, Vector *nodes)
 {
-  if (!left || tkns->type == RPAR)
+  ++(*tkns);
+  --(*left);
+
+  if (!*left || (*tkns)->type == RPAR)
     return NULL;
 
-  Node *n = parse(tkns, left, nodes);
+  Node *n = parse(*tkns, *left, nodes);
   if (n == NULL)
     return NULL;
 
   Node *pair = Vector_next(nodes);
   pair->type = P_PAIR;
   pair->pair.a = n;
-  pair->pair.b = parse_list(tkns+1, left-1, nodes);
+  pair->pair.b = parse_list(tkns, left, nodes);
 
   return pair;
 }
@@ -72,7 +75,7 @@ Node *parse(Token *tkns, size_t left, Vector *nodes)
       n->sym.name = tkns[0].name;
       return n;
     case LPAR:
-      return parse_list(tkns+1, left-1, nodes);
+      return parse_list(&tkns, &left, nodes);
     case RPAR: break;
       return NULL;
   }
