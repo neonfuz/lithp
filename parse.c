@@ -47,7 +47,7 @@ Node *parse_list(Token *tkns, size_t left, Vector *nodes)
   if (!left || tkns->type == RPAR)
     return NULL;
 
-  Node *n = recur_parse(tkns, left, nodes);
+  Node *n = parse(tkns, left, nodes);
   if (n == NULL)
     return NULL;
 
@@ -59,7 +59,7 @@ Node *parse_list(Token *tkns, size_t left, Vector *nodes)
   return pair;
 }
 
-Node *recur_parse(Token *tkns, size_t left, Vector *nodes)
+Node *parse(Token *tkns, size_t left, Vector *nodes)
 {
   if (!left)
     return NULL;

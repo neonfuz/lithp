@@ -13,7 +13,7 @@ void print_test(char *sexpr)
   printTokens(tl.tokens, tl.count, stdout);
 
   Vector nodes = new_Vector(Node, tl.count);
-  Node *n = recur_parse(tl.tokens, tl.count, &nodes);
+  Node *n = parse(tl.tokens, tl.count, &nodes);
 
   print_parsenode(n, 0, stdout);
 
