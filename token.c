@@ -20,21 +20,25 @@ TokenList tokenize(char *sexpr)
   bool inSymbol = false;
 
   for (int i = 0; i < len; ++i) {
+    if (inSymbol && (sexpr[i] == '(' || sexpr[i] == ')')) {
+      strings[strhead++] = '\0';
+    }
+
     switch (sexpr[i]) {
     case '(': tokens[tokhead++] = (Token){ LPAR }; break;
     case ')': tokens[tokhead++] = (Token){ RPAR }; break;
     default:
       if (isblank(sexpr[i])) {
-	if (inSymbol) {
-	  inSymbol = false;
-	  strings[strhead++] = '\0';
-	}
+        if (inSymbol) {
+          inSymbol = false;
+          strings[strhead++] = '\0';
+        }
       } else {
-	if (!inSymbol) {
-	  tokens[tokhead++] = (Token){ SYM, strings+strhead };
-	  inSymbol = true;
-	}
-	strings[strhead++] = sexpr[i];
+        if (!inSymbol) {
+          tokens[tokhead++] = (Token){ SYM, strings+strhead };
+          inSymbol = true;
+        }
+        strings[strhead++] = sexpr[i];
       }
     }
   }
