@@ -7,15 +7,24 @@
 #include "token.h"
 #include "parse.h"
 
-int main(int argc, char **argv)
+void print_test(char *sexpr)
 {
-  TokenList tl = tokenize("(hello world)");
+  TokenList tl = tokenize(sexpr);
   printTokens(tl.tokens, tl.count, stdout);
 
   Vector nodes = new_Vector(Node, tl.count);
   Node *n = recur_parse(tl.tokens, tl.count, &nodes);
 
   print_parsenode(n, 0, stdout);
+
+  // TODO: free resources
+}
+
+int main(int argc, char **argv)
+{
+  print_test("(hello world)");
+  print_test("(foo (bar (baz) hello world) 9001)");
+  // TODO: fix implementation, fails on duplicate baz
 
   return 0;
 }
