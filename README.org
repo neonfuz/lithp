@@ -1,0 +1,6 @@
+* Lithp
+
+Lithp is a WIP lisp interpreter with not much currently planned. The first stage
+is beieng developed in c11 and will implement a minimal language. Further stages
+aren't planned, but other features like higher level languages and an optimizer
+might be implemented in the future.
