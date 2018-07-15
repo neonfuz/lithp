@@ -1,3 +1,5 @@
+# Makefile
+
 main: *.c
 	$(CC) $(CFLAGS) -o $@ *.c
 
