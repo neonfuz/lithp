@@ -1,26 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <stdbool.h>
 #include <string.h>
 
 #include "mem.h"
 #include "token.h"
 #include "parse.h"
 
-void print_test(char *sexpr)
+void file_print_test(char *sexpr, FILE *f)
 {
   TokenList tl = tokenize(sexpr);
-  printTokens(tl.tokens, tl.count, stdout);
 
   Token *tokens = tl.tokens;
   size_t count = tl.count;
   Vector nodes = new_Vector(Node, tl.count);
   Node *n = parse(&tokens, &count, &nodes);
 
-  print_parsenode(n, 0, stdout);
+  print_node_sexpr(n, f, false, 0);
+  fputc('\n', f);
 
   // TODO: free resources
 }
+
+void print_test(char *sexpr)
+{
+  file_print_test(sexpr, stdout);
+}
+
 
 int main(int argc, char **argv)
 {

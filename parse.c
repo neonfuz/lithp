@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
 #include "mem.h"
 #include "token.h"
@@ -10,6 +12,32 @@ void pad_depth(int depth, FILE *f)
 {
   depth *= 2; // Tab width
   while (depth--) fputc(' ', f);
+}
+
+size_t print_node_sexpr(Node *n, FILE *f, bool inList, size_t count)
+{
+  enum NodeType type = n==NULL ? P_NIL : n->type;
+  switch (type) {
+  case P_SYM:
+    count += strlen(n->sym.name);
+    fputs(n->sym.name, f);
+    break;
+  case P_PAIR:
+    if (!inList)
+      fputc('(', f);
+    print_node_sexpr(n->pair.a, f, false, count);
+    if (n->pair.b == NULL) {
+      fputc(')', f);
+    } else {
+      fputc(' ', f);
+      print_node_sexpr(n->pair.b, f, true, count);
+    }
+    break;
+  case P_NIL:
+    fputs("NIL", f);
+    break;
+  }
+  return count;
 }
 
 void print_parsenode(Node *n, int depth, FILE *f)
