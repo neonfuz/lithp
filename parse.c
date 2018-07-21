@@ -33,6 +33,10 @@ size_t print_node_sexpr(Node *n, FILE *f, bool inList, size_t count)
       print_node_sexpr(n->pair.b, f, true, count);
     }
     break;
+  case P_QUOTE:
+    fputc('\'', f);
+    print_node_sexpr(n->quote.node, f, false, count);
+    break;
   case P_NIL:
     fputs("NIL", f);
     break;
@@ -106,6 +110,12 @@ Node *parse(Token **tkns, size_t *left, Vector *nodes)
       return parse_list(tkns, left, nodes);
     case RPAR: break;
       return NULL;
+    case QUOTE:
+      n = Vector_next(nodes);
+      n->type = P_QUOTE;
+      (*tkns)++; (*left)--;
+      n->quote.node = parse(tkns, left, nodes);
+      return n;
   }
 }
 
