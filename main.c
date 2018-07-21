@@ -41,11 +41,31 @@ void print_test(char *sexpr)
 }
 
 
+char *read_file(char *path)
+{
+  FILE *f = fopen(path, "r");
+  fseek(f, 0, SEEK_END);
+  size_t size = ftell(f);
+  char *file = malloc(size+1);
+  rewind(f);
+  for(size_t i=0; i<size; ++i)
+    file[i] = fgetc(f);
+  file[size] = '\0';
+  fclose(f);
+  return file;
+}
+
 int main(int argc, char **argv)
 {
   print_test("(hello world)");
   print_test("(foo (bar (baz) hello world) 9001)");
   // TODO: fix implementation, fails on duplicate baz
+
+  for (int arg = 1; arg < argc; ++arg) {
+    char *file = read_file(argv[arg]);
+    print_test(file);
+    free(file);
+  }
 
   return 0;
 }
