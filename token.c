@@ -28,7 +28,7 @@ TokenList tokenize(char *sexpr)
     case '(': tokens[tokhead++] = (Token){ LPAR }; break;
     case ')': tokens[tokhead++] = (Token){ RPAR }; break;
     default:
-      if (isblank(sexpr[i])) {
+      if (isspace(sexpr[i])) {
         if (inSymbol) {
           inSymbol = false;
           strings[strhead++] = '\0';
