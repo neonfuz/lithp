@@ -6,6 +6,18 @@
 
 #include "token.h"
 
+TokenType toktype(char c)
+{
+  switch (c) {
+  case '(': return LPAR;
+  case ')': return RPAR;
+  case '\'': return QUOTE;
+  default:
+    if (isspace(c)) return SPACE;
+    else return SYM;
+  }
+}
+
 // TODO: make smarter string compacting algorithm
 TokenList tokenize(char *sexpr)
 {
@@ -24,22 +36,24 @@ TokenList tokenize(char *sexpr)
       strings[strhead++] = '\0';
     }
 
-    switch (sexpr[i]) {
-    case '(': tokens[tokhead++] = (Token){ LPAR }; break;
-    case ')': tokens[tokhead++] = (Token){ RPAR }; break;
-    default:
-      if (isspace(sexpr[i])) {
-        if (inSymbol) {
-          inSymbol = false;
-          strings[strhead++] = '\0';
-        }
-      } else {
-        if (!inSymbol) {
-          tokens[tokhead++] = (Token){ SYM, strings+strhead };
-          inSymbol = true;
-        }
-        strings[strhead++] = sexpr[i];
+    TokenType type = toktype(sexpr[i]);
+
+    if (inSymbol && type != SYM) {
+      inSymbol = false;
+      strings[strhead++] = '\0';
+    }
+
+    switch (type) {
+    case SPACE: break;
+    case LPAR: case RPAR: case QUOTE:
+      tokens[tokhead++] = (Token){type}; break;
+    case SYM:
+      if (!inSymbol) {
+        tokens[tokhead++] = (Token){ SYM, strings+strhead };
+        inSymbol = true;
       }
+      strings[strhead++] = sexpr[i];
+      break;
     }
   }
   strings[strhead++] = '\0';

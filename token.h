@@ -1,5 +1,7 @@
+typedef enum { LPAR, SYM, RPAR, QUOTE, SPACE } TokenType;
+
 typedef struct {
-  enum TokenType { LPAR, SYM, RPAR } type;
+  TokenType type;
   union {
     char *name;
   };
