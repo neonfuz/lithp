@@ -7,6 +7,7 @@
 #include "mem.h"
 #include "token.h"
 #include "parse.h"
+#include "util.h"
 
 typedef struct {
   Node *head_node;
@@ -40,20 +41,6 @@ void print_test(char *sexpr)
   file_print_test(sexpr, stdout);
 }
 
-
-char *read_file(char *path)
-{
-  FILE *f = fopen(path, "r");
-  fseek(f, 0, SEEK_END);
-  size_t size = ftell(f);
-  char *file = malloc(size+1);
-  rewind(f);
-  for(size_t i=0; i<size; ++i)
-    file[i] = fgetc(f);
-  file[size] = '\0';
-  fclose(f);
-  return file;
-}
 
 int main(int argc, char **argv)
 {
