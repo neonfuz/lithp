@@ -25,8 +25,6 @@ typedef struct {
   char *strings;
 } NodeList;
 
-size_t print_node_sexpr(Node *n, FILE *f, bool inList, size_t count);
-void print_parsenode(Node *n, int depth, FILE *f);
-
+size_t print_node(Node *n, FILE *f, bool inList, size_t count);
 Node *parse(Token **tkns, size_t *left, Vector *nodes);
 void free_NodeList(NodeList nl);

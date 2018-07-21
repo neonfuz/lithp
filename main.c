@@ -33,7 +33,7 @@ void file_print_test(char *sexpr, FILE *f)
 
   Node *result = eval(parsed.head_node);
 
-  print_node_sexpr(result, f, false, 0);
+  print_node(result, f, false, 0);
   fputc('\n', f);
 
   // TODO: free resources

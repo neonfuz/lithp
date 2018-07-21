@@ -14,7 +14,7 @@ void pad_depth(int depth, FILE *f)
   while (depth--) fputc(' ', f);
 }
 
-size_t print_node_sexpr(Node *n, FILE *f, bool inList, size_t count)
+size_t print_node(Node *n, FILE *f, bool inList, size_t count)
 {
   enum NodeType type = n==NULL ? P_NIL : n->type;
   switch (type) {
@@ -25,52 +25,23 @@ size_t print_node_sexpr(Node *n, FILE *f, bool inList, size_t count)
   case P_PAIR:
     if (!inList)
       fputc('(', f);
-    print_node_sexpr(n->pair.a, f, false, count);
+    print_node(n->pair.a, f, false, count);
     if (n->pair.b == NULL) {
       fputc(')', f);
     } else {
       fputc(' ', f);
-      print_node_sexpr(n->pair.b, f, true, count);
+      print_node(n->pair.b, f, true, count);
     }
     break;
   case P_QUOTE:
     fputc('\'', f);
-    print_node_sexpr(n->quote.node, f, false, count);
+    print_node(n->quote.node, f, false, count);
     break;
   case P_NIL:
     fputs("NIL", f);
     break;
   }
   return count;
-}
-
-void print_parsenode(Node *n, int depth, FILE *f)
-{
-  enum NodeType type = n==NULL ? P_NIL : n->type;
-  char *typestr;
-  switch (type) {
-  case P_NIL:  typestr = "NIL"; break;
-  case P_SYM:  typestr = "SYM"; break;
-  case P_PAIR: typestr = "PAIR"; break;
-  default:     typestr = "UNKNOWN"; break;
-  }
-
-  pad_depth(depth, f);
-  fprintf(f, "type: %s\n", typestr);
-
-  switch (type) {
-  case P_NIL:
-    break;
-  case P_SYM:
-    pad_depth(depth, f);
-    fprintf(f, "content: %s\n\n", n->sym.name);
-    break;
-  case P_PAIR:
-    print_parsenode(n->pair.a, depth+1, f);
-    print_parsenode(n->pair.b, depth+1, f);
-    break;
-  default: break;
-  }
 }
 
 static
