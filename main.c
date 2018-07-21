@@ -7,6 +7,7 @@
 #include "mem.h"
 #include "token.h"
 #include "parse.h"
+#include "eval.h"
 #include "util.h"
 
 typedef struct {
@@ -30,7 +31,9 @@ void file_print_test(char *sexpr, FILE *f)
 {
   ParsedSexpr parsed = _parse(sexpr);
 
-  print_node_sexpr(parsed.head_node, f, false, 0);
+  Node *result = eval(parsed.head_node);
+
+  print_node_sexpr(result, f, false, 0);
   fputc('\n', f);
 
   // TODO: free resources
