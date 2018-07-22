@@ -1,1 +1,1 @@
-Node *eval(Node *prog);
+Node *eval(Node *prog, Node *scope);

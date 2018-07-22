@@ -31,7 +31,7 @@ void file_print_test(char *sexpr, FILE *f)
 {
   ParsedSexpr parsed = _parse(sexpr);
 
-  Node *result = eval(parsed.head_node);
+  Node *result = eval(parsed.head_node, NULL);
 
   print_node(result, f, false, 0);
   fputc('\n', f);
