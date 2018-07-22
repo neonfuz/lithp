@@ -11,7 +11,7 @@ struct Quote_s {
 };
 
 typedef struct Node_s {
-  enum NodeType {P_NIL, P_SYM, P_PAIR, P_QUOTE} type;
+  enum NodeType {P_NIL, P_SYM, P_PAIR, P_QUOTE, P_LAMBDA} type;
   union {
     struct Pair_s pair;
     struct Symbol_s sym;

@@ -37,6 +37,9 @@ size_t print_node(Node *n, FILE *f, bool inList, size_t count)
     fputc('\'', f);
     print_node(n->quote.node, f, false, count);
     break;
+  case P_LAMBDA:
+    fputs("λ", f);
+    break;
   case P_NIL:
     fputs("NIL", f);
     break;
@@ -71,7 +74,18 @@ Node *parse(Token **tkns, size_t *left, Vector *nodes)
     return NULL;
 
   Node *n;
-  switch ((*tkns)->type) {
+  TokenType type = (*tkns)->type;
+
+  if (type == SYM) {
+    char *name = (*tkns)->name;
+    if (!strcmp("quote", name)) {
+      type = QUOTE;
+    } else if (!strcmp("lambda", name)) {
+      type = LAMBDA;
+    }
+  }
+
+  switch (type) {
     case SYM:
       n = Vector_next(nodes);
       n->type = P_SYM;
@@ -87,6 +101,11 @@ Node *parse(Token **tkns, size_t *left, Vector *nodes)
       (*tkns)++; (*left)--;
       n->quote.node = parse(tkns, left, nodes);
       return n;
+    case LAMBDA:
+      n = Vector_next(nodes);
+      n->type = P_LAMBDA;
+      return n;
+    default: return NULL;
   }
 }
 

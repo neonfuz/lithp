@@ -1,2 +1,4 @@
-((define true (a b) a)
-'(define false (a b) b))
+(
+ (lambda (a b) a)
+ (lambda (a b) b)
+)

@@ -1,4 +1,4 @@
-typedef enum { LPAR, SYM, RPAR, QUOTE, SPACE } TokenType;
+typedef enum { LPAR, SYM, RPAR, QUOTE, LAMBDA, SPACE } TokenType;
 
 typedef struct {
   TokenType type;
