@@ -1,6 +1,6 @@
 # Makefile
 
-bin/main: *.c
+bin/main: *.c *.h
 	$(CC) $(CFLAGS) -o $@ *.c
 
 clean:
